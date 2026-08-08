@@ -25,10 +25,10 @@ The live database has been seeded with test accounts for all RBAC roles so you c
 
 | Role | Email | Password |
 | :--- | :--- | :--- |
-| **Admin** *(Full Access)* | `admin@ledger.com` | `admin123` |
-| **Sales** *(CRM & Orders)* | `sales@ledger.com` | `sales123` |
-| **Warehouse** *(Inventory)* | `warehouse@ledger.com` | `warehouse123` |
-| **Accounts** *(Finance)* | `accounts@ledger.com` | `accounts123` |
+| **Admin** *(Full Access)* | `admin@ledger.test` | `password123` |
+| **Sales** *(CRM & Orders)* | `sales@ledger.test` | `password123` |
+| **Warehouse** *(Inventory)* | `warehouse@ledger.test` | `password123` |
+| **Accounts** *(Finance)* | `accounts@ledger.test` | `password123` |
 
 ---
 
