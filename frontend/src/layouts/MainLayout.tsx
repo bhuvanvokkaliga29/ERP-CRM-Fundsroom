@@ -203,6 +203,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isDemo = localStorage.getItem('tenantId') === 'demo';
 
   const { data: notifData } = useQuery({
     queryKey: ['notifications'],
@@ -253,7 +254,10 @@ export default function MainLayout({ children }: { children: ReactNode }) {
               >
                 <Menu size={20} />
               </button>
-              <Link to="/dashboard" className="text-xl font-normal tracking-tight text-[#F5F5F5]">Ledger.</Link>
+              <Link to="/dashboard" className="flex items-center gap-2">
+                <span className="text-xl font-normal tracking-tight text-[#F5F5F5]">Ledger.</span>
+                {isDemo && <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#ffda6e] text-black tracking-widest uppercase ml-2">DEMO</span>}
+              </Link>
             </div>
 
             {/* Center nav - shifted slightly left to optically balance the heavy right actions */}
@@ -354,11 +358,27 @@ export default function MainLayout({ children }: { children: ReactNode }) {
                         <Link to="/admin/audit" className="block px-4 py-2 text-[13px] tracking-wide text-[#737373] hover:text-[#F5F5F5] hover:bg-[#0A0A0A] transition-colors">Audit Logs</Link>
                       </>
                     )}
+                    {isDemo && (
+                      <button 
+                        onClick={() => {
+                          if (window.confirm('Reset Demo Environment?\n\nThis will restore the prepared demonstration dataset.')) {
+                            api.post('/demo/reset').then(() => {
+                              window.location.reload();
+                            }).catch(err => {
+                              alert('Failed to reset demo: ' + (err.response?.data?.message || err.message));
+                            });
+                          }
+                        }}
+                        className="w-full text-left px-4 py-2 text-[13px] tracking-wide text-red-400 hover:text-red-300 hover:bg-[#0A0A0A] transition-colors border-t border-[#1a1a1a] mt-1"
+                      >
+                        Reset Demo Data
+                      </button>
+                    )}
                     <button 
                       onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 text-[13px] tracking-wide text-[#737373] hover:text-[#F5F5F5] hover:bg-[#0A0A0A] flex items-center justify-between transition-colors"
+                      className="w-full text-left px-4 py-2 text-[13px] tracking-wide text-[#737373] hover:text-[#F5F5F5] hover:bg-[#0A0A0A] flex items-center justify-between transition-colors border-t border-[#1a1a1a]"
                     >
-                      Sign out <LogOut size={14} />
+                      {isDemo ? 'Exit Demo' : 'Sign out'} <LogOut size={14} />
                     </button>
                   </div>
                 )}

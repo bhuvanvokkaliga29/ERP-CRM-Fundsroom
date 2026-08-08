@@ -22,6 +22,7 @@ import notificationRoutes from './modules/notifications/notification.routes';
 import auditRoutes from './modules/audit/audit.routes';
 import intelligenceRoutes from './modules/intelligence/intelligence.routes';
 import aiRoutes from './modules/ai/ai.routes';
+import demoRoutes from './modules/demo/demo.routes';
 import { prisma, tenantStorage } from './config/database';
 
 const app = express();
@@ -113,6 +114,7 @@ app.use('/api/v1/notifications', notificationRoutes);
 app.use('/api/v1/audit', auditRoutes);
 app.use('/api/v1/intelligence', intelligenceRoutes);
 app.use('/api/v1/ai', aiRoutes);
+app.use('/api/v1/demo', demoRoutes);
 
 // Root route
 app.get('/', (_req, res) => {
