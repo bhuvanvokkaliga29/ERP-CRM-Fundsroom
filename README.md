@@ -13,123 +13,122 @@
 
 ---
 
+## 🚀 Live Demo & Links
+
+- **GitHub Repository:** [bhuvanvokkaliga29/ERP-CRM-Fundsroom](https://github.com/bhuvanvokkaliga29/ERP-CRM-Fundsroom)
+- **Live Frontend (Vercel):** [https://erp-crm-fundsroom-three.vercel.app](https://erp-crm-fundsroom-three.vercel.app)
+- **Live Backend API (Render):** [https://erp-crm-fundsroom-6lbo.onrender.com](https://erp-crm-fundsroom-6lbo.onrender.com)
+- **API Documentation (Swagger UI):** [https://erp-crm-fundsroom-6lbo.onrender.com/api/docs](https://erp-crm-fundsroom-6lbo.onrender.com/api/docs)
+
+### 🔐 Test Login Credentials
+The live database has been seeded with test accounts for all RBAC roles so you can test permissions:
+
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| **Admin** *(Full Access)* | `admin@ledger.com` | `admin123` |
+| **Sales** *(CRM & Orders)* | `sales@ledger.com` | `sales123` |
+| **Warehouse** *(Inventory)* | `warehouse@ledger.com` | `warehouse123` |
+| **Accounts** *(Finance)* | `accounts@ledger.com` | `accounts123` |
+
+---
+
 ## 🏛️ System Architecture
 
-<img width="5262" height="2605" alt="architecture-a4-1786189858369" src="https://github.com/user-attachments/assets/177b996c-08a7-4f9a-852f-d2895ab0b35b" />
+[![Ledger Architecture Diagram](https://raw.githubusercontent.com/bhuvanvokkaliga29/ERP-CRM-Fundsroom/main/docs/architecture.png)](https://raw.githubusercontent.com/bhuvanvokkaliga29/ERP-CRM-Fundsroom/main/docs/architecture.png)
+*(Click the image to zoom in)*
 
-
-This platform is structured as a full-stack monorepo encompassing a Node.js API gateway and a React SPA, driven by a relational PostgreSQL database to ensure strict ACID compliance for inventory and sales ledgers.
+### Architecture Overview
+This platform is structured as a decoupled, full-stack enterprise architecture:
+1. **Frontend Presentation Layer (React + Vite):** A highly responsive, stateless SPA deployed on Vercel Edge Network. It handles client-side routing, RBAC UI enforcement, and real-time state caching using React Query.
+2. **Backend API Gateway (Node.js + Express):** A monolithic RESTful API deployed on Render. It validates all incoming requests using Zod, enforces JWT-based authorization, and handles business logic orchestration.
+3. **Database Layer (PostgreSQL):** A strictly relational database (hosted on Render) ensuring ACID compliance for critical financial and inventory ledgers. It is interfaced securely via the Prisma ORM.
 
 ---
 
-## 🎯 Core Modules & Implementation Status
-
-We have strictly adhered to the business requirements, delivering a complete suite of interconnected modules:
+## 🎯 Core Modules & Features
 
 ### 1. 🔐 Authentication & Roles (100% Complete)
-Secure, stateless JWT-based authentication system with strict Role-Based Access Control (RBAC).
-- **Supported Roles:** `Admin`, `Sales`, `Warehouse`, `Accounts`.
-- **Implementation:** Middleware validates tokens on every request and restricts endpoint access based on the user's role (e.g., only Admin/Warehouse can adjust stock, only Sales/Admin can create Challans).
+Secure, stateless JWT-based authentication system with strict Role-Based Access Control (RBAC). Middleware validates tokens on every request and restricts endpoint access based on the user's role.
 
 ### 2. 🤝 Customer CRM Module (100% Complete)
-A comprehensive CRM system to track and nurture leads into active wholesale clients.
-- **Data Points Tracked:** Customer Name, Mobile Number, Email, Business Name, GST Number (Optional), Customer Type (Retail, Wholesale, Distributor), Address, Status (Lead, Active, Inactive), Next Follow-up Date, and specialized Notes.
-- **Features:** 
-  - Advanced search and filtering by customer status and type.
-  - Dedicated Customer Detail Pages showing interaction history.
-  - Interactive Follow-up Logging to nurture leads.
+A comprehensive CRM system to track and nurture leads into active wholesale clients. Includes interactive follow-up logging, lead status tracking, and advanced filtering.
 
 ### 3. 📦 Product & Inventory Module (100% Complete)
-Real-time, ledged-based stock tracking system to prevent overselling.
-- **Data Points Tracked:** Product Name, SKU/Code, Category, Unit Price, Current Stock, Minimum Stock Alert Quantity, Location/Warehouse.
-- **Features:**
-  - Automated Low-Stock Alerts generated on the dashboard.
-  - Granular Stock Movement Ledgers (tracking every addition and deduction).
-  - Categorization and SKU-based fast searching.
+Real-time, ledged-based stock tracking system to prevent overselling. Includes automated low-stock alerts, category management, and granular stock movement ledgers.
 
 ### 4. 🛒 Order / Sales Module (100% Complete)
-A robust transaction engine that connects CRM with Inventory.
-- **Features:**
-  - **Create Sales Challans:** Dynamically add products, auto-calculate subtotals, GST, and grand totals.
-  - **Stock Automation:** Upon confirming a Challan, stock is automatically and transactionally deducted from the warehouse.
-  - **Status Tracking:** Track orders through `DRAFT`, `CONFIRMED`, `SHIPPED`, and `DELIVERED` states.
-  - **Payment Integration:** Track whether a challan is `PENDING`, `PARTIAL`, or `PAID`.
+A robust transaction engine that connects CRM with Inventory. Dynamically create Sales Challans, auto-calculate totals, and transactionally deduct stock upon confirmation.
 
 ### 5. 📊 Reporting & Analytics Module (100% Complete)
-A powerful dashboard providing immediate operational visibility.
-- **Features:**
-  - **Total Revenue & Sales:** Real-time calculation of generated revenue across all timeframes.
-  - **Low Stock Alerts:** Instant visibility into products requiring re-ordering.
-  - **Recent Orders:** A live feed of the latest sales challans.
-  - **Customer Metrics:** Breakdown of active customers and leads.
+A powerful dashboard providing immediate operational visibility, including Total Revenue, Low Stock Alerts, and Recent Order feeds.
 
 ---
 
-## 💻 Tech Stack & Engineering Choices
+## 💻 Tech Stack
 
 ### The Frontend (Client-side)
 * **React 19 & Vite:** Lightning-fast HMR and optimized production builds.
 * **TypeScript:** End-to-end type safety eliminating runtime errors.
-* **Tailwind CSS:** A bespoke, ultra-premium black-on-black minimalist design system. No generic component libraries used.
+* **Tailwind CSS:** A bespoke, ultra-premium black-on-black minimalist design system.
 * **React Query:** Powerful async state management and caching.
 
 ### The Backend (Server-side)
 * **Node.js & Express.js:** Industry standard, robust REST API architecture.
 * **PostgreSQL:** Relational database chosen for its strict data integrity constraints.
-* **Prisma ORM:** Type-safe database client ensuring our TypeScript types perfectly match the database schema.
-* **Zod:** Strict runtime validation for all incoming API requests to prevent malformed data.
+* **Prisma ORM:** Type-safe database client.
+* **Swagger/OpenAPI:** Auto-generated interactive API documentation.
 
 ---
 
-## 🛠️ Local Development Setup
+## 🛠️ Local Setup & Deployment Instructions
 
 ### Prerequisites
 * **Node.js** (v20.x or higher)
-* **Docker Desktop** (for PostgreSQL orchestration)
+* **Docker Desktop** (for local PostgreSQL orchestration)
 
-### 1. Database Initialization
-Spin up the PostgreSQL instance using Docker Compose:
-```bash
-docker-compose up -d
-```
+### Local Development
 
-### 2. Backend Setup
-```bash
-cd backend
-npm install
+1. **Database Initialization**
+   Spin up the PostgreSQL instance using Docker Compose:
+   ```bash
+   docker-compose up -d
+   ```
 
-# Setup environment variables
-cp .env.example .env
+2. **Backend Setup**
+   ```bash
+   cd backend
+   npm install
+   cp .env.example .env
+   npx prisma migrate dev
+   npm run db:seed
+   npm run dev
+   ```
+   *API runs on `http://localhost:3000`*
 
-# Run database migrations & seed initial data
-npx prisma migrate dev
-npm run seed
+3. **Frontend Setup**
+   ```bash
+   cd frontend
+   npm install
+   cp .env.example .env
+   npm run dev
+   ```
+   *Frontend runs on `http://localhost:5173`*
 
-# Start the API server
-npm run dev
-```
-*The backend will run on `http://localhost:3000`*
+### Production Deployment
 
-### 3. Frontend Setup
-Open a new terminal window:
-```bash
-cd frontend
-npm install
+#### 1. Deploying the Backend & Database (Render)
+1. Create a New PostgreSQL database on Render.
+2. Create a New Web Service connected to the `backend` root directory.
+3. Set Build Command: `npm install --include=dev && npx prisma generate && npm run build`
+4. Set Start Command: `npx prisma db push --accept-data-loss && npm start`
+5. Add Environment Variables: `DATABASE_URL`, `JWT_SECRET`, `NODE_ENV=production`, `PORT=10000`.
 
-# Setup environment variables
-cp .env.example .env
-
-# Start the Vite development server
-npm run dev
-```
-*The frontend will run on `http://localhost:5173`*
-
----
-
-## 🧪 Default Credentials
-To access the platform locally, use the seeded admin credentials:
-- **Email:** `admin@ledger.test`
-- **Password:** `password123`
+#### 2. Deploying the Frontend (Vercel)
+1. Import the repository into Vercel.
+2. Set the Root Directory to `frontend`.
+3. Set Framework Preset to `Vite`.
+4. Add Environment Variable: `VITE_API_URL` pointing to your Render backend URL (e.g. `https://your-api.onrender.com/api/v1`).
+5. Deploy.
 
 ---
 
