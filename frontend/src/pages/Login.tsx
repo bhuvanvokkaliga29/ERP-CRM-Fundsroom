@@ -93,18 +93,38 @@ export default function Login() {
             </button>
           </form>
           
-          <div className="mt-6 border-t border-ink/10 pt-6 text-center text-sm text-graphite">
-            Use <span className="font-mono bg-black/5 px-1 py-0.5 rounded">admin@ledger.test</span> / <span className="font-mono bg-black/5 px-1 py-0.5 rounded">password123</span>
-          </div>
-
-          <div className="mt-6 border-t border-ink/10 pt-6 text-center">
-            <p className="text-sm text-graphite mb-3">Or explore the isolated demonstration environment</p>
-            <a 
-              href="http://localhost:5174" 
-              className="btn-secondary w-full inline-block cursor-pointer text-sm py-2.5"
-            >
-              Explore Demo (Mock Data)
-            </a>
+          <div className="mt-6 border-t border-ink/10 pt-6">
+            <p className="text-xs text-graphite mb-3 text-center uppercase tracking-wider font-semibold">One-Click Demo Login</p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => onSubmit({ email: 'admin@ledger.test', password: 'password123' })}
+                className="px-3 py-2 text-xs font-medium border border-ink/10 rounded hover:bg-ink/5 transition-colors text-ink text-left"
+              >
+                1. Admin (Full)
+              </button>
+              <button
+                type="button"
+                onClick={() => onSubmit({ email: 'sales@ledger.test', password: 'password123' })}
+                className="px-3 py-2 text-xs font-medium border border-ink/10 rounded hover:bg-ink/5 transition-colors text-ink text-left"
+              >
+                2. Sales 
+              </button>
+              <button
+                type="button"
+                onClick={() => onSubmit({ email: 'warehouse@ledger.test', password: 'password123' })}
+                className="px-3 py-2 text-xs font-medium border border-ink/10 rounded hover:bg-ink/5 transition-colors text-ink text-left"
+              >
+                3. Warehouse
+              </button>
+              <button
+                type="button"
+                onClick={() => onSubmit({ email: 'accounts@ledger.test', password: 'password123' })}
+                className="px-3 py-2 text-xs font-medium border border-ink/10 rounded hover:bg-ink/5 transition-colors text-ink text-left"
+              >
+                4. Accounts
+              </button>
+            </div>
           </div>
         </div>
       </div>
