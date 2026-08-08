@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #000000;
+  --color-ink: #ffffff;
+  --color-graphite: #737373; /* muted gray */
+  --color-sunshine: #ffda6e; /* ledger yellow */
+  --color-mint: #6ece9d;
+
+  --color-surface: #050505; /* slightly off-black for surfaces */
+  --color-surface-elevated: #080808;
+  --color-border: #1a1a1a; /* subtle dark gray */
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Spacing */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem; /* 8px */
+  --spacing-4: 1rem; /* 16px */
+  --spacing-6: 1.5rem; /* 24px */
+  --spacing-8: 2rem; /* 32px */
+  --spacing-12: 3rem; /* 48px */
+  --spacing-16: 4rem; /* 64px */
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-xl: 16px;
+}
+
+@layer base {
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  html, body {
+    @apply bg-black text-[#F5F5F5] font-sans antialiased;
+    height: 100%;
+  }
+
+  * {
+    box-shadow: none !important;
+  }
+}
+
+@layer components {
+  /* Subtle black-on-black surface */
+  .card {
+    @apply bg-[#050505] rounded-md border border-[#1a1a1a] p-6;
+  }
+  
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-sm bg-[#ffda6e] px-4 py-2 text-black font-medium transition-colors hover:bg-[#e5c463] focus:outline-none focus:ring-2 focus:ring-[#ffda6e] focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50;
+  }
+  
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-sm bg-transparent border border-white/20 px-4 py-2 text-white font-medium transition-colors hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50;
+  }
+
+  .input-field {
+    @apply block w-full rounded-sm border border-[#202020] bg-[#050505] px-3 py-2 text-white placeholder-[#737373] focus:border-[#ffda6e] focus:outline-none focus:ring-1 focus:ring-[#ffda6e] disabled:bg-[#0A0A0A] disabled:text-[#737373];
+  }
+
+  .label {
+    @apply block text-[11px] font-medium text-[#737373] mb-1 uppercase tracking-[0.2em];
+  }
+  
+  .table-container {
+    @apply w-full overflow-x-auto;
+  }
+  
+  .data-table {
+    @apply w-full text-left text-sm;
+  }
+  
+  .data-table th {
+    @apply border-b border-[#1a1a1a] px-4 py-3 font-medium text-[#737373] bg-[#000000] sticky top-0 uppercase text-[11px] tracking-[0.2em];
+  }
+  
+  .data-table td {
+    @apply border-b border-[#1a1a1a] px-4 py-3 text-[#F5F5F5];
+  }
+  
+  .data-table tbody tr:hover {
+    @apply bg-[#050505] transition-colors;
+  }
+
+  .status-pill {
+    @apply inline-flex items-center rounded-sm border border-[#202020] px-2.5 py-0.5 text-xs font-medium bg-[#050505] text-[#A1A1A1];
+  }
+}
