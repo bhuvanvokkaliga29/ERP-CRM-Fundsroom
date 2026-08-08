@@ -15,8 +15,8 @@
 
 ## 🏛️ System Architecture
 
-[![Ledger Architecture Diagram](https://raw.githubusercontent.com/bhuvanvokkaliga29/ERP-CRM-Fundsroom/main/docs/architecture.png)](https://raw.githubusercontent.com/bhuvanvokkaliga29/ERP-CRM-Fundsroom/main/docs/architecture.png)
-*🔍 Click the image above to zoom in and explore the full architectural diagram.*
+<img width="5262" height="2605" alt="architecture-a4-1786189858369" src="https://github.com/user-attachments/assets/177b996c-08a7-4f9a-852f-d2895ab0b35b" />
+
 
 This platform is structured as a full-stack monorepo encompassing a Node.js API gateway and a React SPA, driven by a relational PostgreSQL database to ensure strict ACID compliance for inventory and sales ledgers.
 
