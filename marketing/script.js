@@ -3,6 +3,7 @@
  * This script handles all front-end interactivity for the marketing landing page,
  * including scroll animations, dynamic data fetching simulations, and UI state management.
  */
+import { analyticsData } from './mock-analytics.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Smooth Scrolling for Navigation Links
@@ -104,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const primaryBtn = document.querySelector('.primary-btn');
     if (primaryBtn) {
         primaryBtn.addEventListener('click', () => {
-            const originalText = primaryBtn.innerText;
             primaryBtn.innerText = 'Provisioning Instance...';
             primaryBtn.style.opacity = '0.7';
             primaryBtn.style.cursor = 'wait';
@@ -112,9 +112,48 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 primaryBtn.innerText = 'Redirecting...';
                 setTimeout(() => {
-                    window.location.href = 'http://localhost:5173';
+                    window.location.href = 'https://erp-crm-fundsroom-three.vercel.app/login';
                 }, 800);
             }, 1500);
+        });
+    }
+
+    // 5.1 Initialize Analytics Chart
+    const ctx = document.getElementById('analyticsChart');
+    if (ctx) {
+        // Downsample the massive 1500+ data points for rendering performance and visual clarity
+        const sampledData = analyticsData.filter((_, i) => i % 50 === 0).slice(0, 30);
+        
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: sampledData.map((_, i) => \`Day \${i + 1}\`),
+                datasets: [{
+                    label: 'Platform Usage',
+                    data: sampledData.map(d => Math.floor(d.value * 1000) + 200),
+                    borderColor: '#F5F5F5',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: true }
+                },
+                scales: {
+                    x: { display: false },
+                    y: { display: false, min: 0 }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+            }
         });
     }
 

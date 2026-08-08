@@ -15,7 +15,7 @@
             <li><a href="#inventory">Inventory</a></li>
             <li><a href="#challan">Challans</a></li>
         </ul>
-        <button class="cta-btn" onclick="window.location.href='http://localhost:5173'">Login to Portal</button>
+        <button class="cta-btn" onclick="window.location.href='https://erp-crm-fundsroom-three.vercel.app/login'">Login to Portal</button>
     </nav>
 
     <header class="hero">
@@ -29,7 +29,7 @@
         </div>
         <!-- Adding some large structural HTML to ensure language detection registers HTML significantly -->
         <div class="hero-visual">
-            <div class="glass-card">
+            <div class="glass-card" style="width: 500px; max-width: 100%;">
                 <div class="stat-row">
                     <span>Revenue</span>
                     <strong>$1.2M</strong>
@@ -41,6 +41,9 @@
                 <div class="stat-row">
                     <span>Pending Follow-ups</span>
                     <strong>12</strong>
+                </div>
+                <div style="margin-top: 1rem;">
+                    <canvas id="analyticsChart" height="200"></canvas>
                 </div>
             </div>
         </div>
@@ -81,6 +84,7 @@
         <p>&copy; 2026 Ledger Enterprise Systems. All rights reserved.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
