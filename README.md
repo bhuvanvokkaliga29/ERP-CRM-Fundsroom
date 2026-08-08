@@ -20,8 +20,16 @@
 - **Live Backend API (Render):** [https://erp-crm-fundsroom-6lbo.onrender.com](https://erp-crm-fundsroom-6lbo.onrender.com)
 - **API Documentation (Swagger UI):** [https://erp-crm-fundsroom-6lbo.onrender.com/api/docs](https://erp-crm-fundsroom-6lbo.onrender.com/api/docs)
 
-### 🔐 Test Login Credentials
-The live database has been seeded with test accounts for all RBAC roles so you can test permissions:
+## 🔐 Test Login Credentials
+
+This application features a dual-environment architecture using PostgreSQL schema-based isolation.
+
+### 1. Main Production Environment (Empty)
+This is a clean slate instance for judges to test adding data from scratch. 
+- **Admin**: `admin@ledger.test` / `password123`
+
+### 2. Demo Prototype Environment (Mock Data)
+This environment is pre-filled with hundreds of mock records so you can immediately see the UI in action. You can log into this environment instantly using the **One-Click Demo Login** buttons on the login page!
 
 | Role | Email | Password |
 | :--- | :--- | :--- |

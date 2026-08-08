@@ -25,6 +25,10 @@ export default function Login() {
   });
 
   const onSubmit = async (data: LoginForm) => {
+    // Standard form submission is always for the main tenant
+    if (!localStorage.getItem('tenantId') || localStorage.getItem('tenantId') !== 'demo') {
+      localStorage.setItem('tenantId', 'main');
+    }
     setIsLoading(true);
     try {
       const response = await api.post('/auth/login', data);
@@ -98,28 +102,28 @@ export default function Login() {
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
-                onClick={() => onSubmit({ email: 'admin@ledger.test', password: 'password123' })}
+                onClick={() => { localStorage.setItem('tenantId', 'demo'); onSubmit({ email: 'admin@ledger.test', password: 'password123' }); }}
                 className="px-3 py-2 text-xs font-medium border border-ink/10 rounded hover:bg-ink/5 transition-colors text-ink text-left"
               >
                 1. Admin (Full)
               </button>
               <button
                 type="button"
-                onClick={() => onSubmit({ email: 'sales@ledger.test', password: 'password123' })}
+                onClick={() => { localStorage.setItem('tenantId', 'demo'); onSubmit({ email: 'sales@ledger.test', password: 'password123' }); }}
                 className="px-3 py-2 text-xs font-medium border border-ink/10 rounded hover:bg-ink/5 transition-colors text-ink text-left"
               >
                 2. Sales 
               </button>
               <button
                 type="button"
-                onClick={() => onSubmit({ email: 'warehouse@ledger.test', password: 'password123' })}
+                onClick={() => { localStorage.setItem('tenantId', 'demo'); onSubmit({ email: 'warehouse@ledger.test', password: 'password123' }); }}
                 className="px-3 py-2 text-xs font-medium border border-ink/10 rounded hover:bg-ink/5 transition-colors text-ink text-left"
               >
                 3. Warehouse
               </button>
               <button
                 type="button"
-                onClick={() => onSubmit({ email: 'accounts@ledger.test', password: 'password123' })}
+                onClick={() => { localStorage.setItem('tenantId', 'demo'); onSubmit({ email: 'accounts@ledger.test', password: 'password123' }); }}
                 className="px-3 py-2 text-xs font-medium border border-ink/10 rounded hover:bg-ink/5 transition-colors text-ink text-left"
               >
                 4. Accounts

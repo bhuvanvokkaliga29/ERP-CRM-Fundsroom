@@ -22,7 +22,7 @@ import notificationRoutes from './modules/notifications/notification.routes';
 import auditRoutes from './modules/audit/audit.routes';
 import intelligenceRoutes from './modules/intelligence/intelligence.routes';
 import aiRoutes from './modules/ai/ai.routes';
-import { prisma } from './config/database';
+import { prisma, tenantStorage } from './config/database';
 
 const app = express();
 
@@ -32,7 +32,7 @@ app.use(cors({
   origin: true, // Allow all origins for the hackathon deployment
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Tenant-ID'],
 }));
 
 // Rate limiting
@@ -89,6 +89,12 @@ app.get('/api/health', async (_req, res) => {
       timestamp: new Date().toISOString(),
     });
   }
+});
+
+// Tenant Context Middleware
+app.use((req, res, next) => {
+  const tenant = req.headers['x-tenant-id'] === 'demo' ? 'demo' : 'main';
+  tenantStorage.run(tenant, () => next());
 });
 
 // API routes
