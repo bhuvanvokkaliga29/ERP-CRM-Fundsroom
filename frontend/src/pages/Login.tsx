@@ -113,7 +113,7 @@ export default function Login() {
 
           <div className="mt-8 border-t border-ink/10 pt-6">
             <p className="text-xs text-graphite mb-3 uppercase tracking-wider font-semibold">Judge Access</p>
-            <div className="bg-[#fcfcfc] border border-ink/10 rounded-md p-3 space-y-2 mb-6">
+            <div className="bg-[#0a0a0a] border border-ink/10 rounded-md p-3 space-y-2 mb-6">
               <div className="flex items-center justify-between">
                 <div className="text-sm">
                   <span className="text-graphite mr-2">Email:</span>
