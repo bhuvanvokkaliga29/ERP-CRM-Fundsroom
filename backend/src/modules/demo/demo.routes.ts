@@ -29,6 +29,7 @@ router.post('/reset', async (req: Request, res: Response, next: NextFunction) =>
       dbUrl = dbUrl.replace(/schema=[^&]+/, 'schema=demo');
     }
 
+    const { prisma } = require('../../config/database');
     await prisma.$executeRawUnsafe('CREATE SCHEMA IF NOT EXISTS demo;');
     
     await execPromise('npx prisma db seed', {
