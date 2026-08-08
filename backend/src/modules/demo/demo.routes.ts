@@ -22,9 +22,17 @@ router.post('/reset', async (req: Request, res: Response, next: NextFunction) =>
     // Locally, we'll use the local one. We can just run ts-node or node on the seed script.
     // Since this is just for the hackathon, we can use the prisma seed command.
     
-    // Let's execute the seed script!
+    let dbUrl = process.env.DATABASE_URL || '';
+    if (dbUrl && !dbUrl.includes('schema=')) {
+      dbUrl += (dbUrl.includes('?') ? '&' : '?') + 'schema=demo';
+    } else if (dbUrl) {
+      dbUrl = dbUrl.replace(/schema=[^&]+/, 'schema=demo');
+    }
+
+    await prisma.$executeRawUnsafe('CREATE SCHEMA IF NOT EXISTS demo;');
+    
     await execPromise('npx prisma db seed', {
-      env: { ...process.env, DATABASE_URL: (process.env.DATABASE_URL || '').replace('schema=public', 'schema=demo') }
+      env: { ...process.env, DATABASE_URL: dbUrl }
     });
 
     res.json({ success: true, message: 'Demo environment reset successfully' });
@@ -35,10 +43,19 @@ router.post('/reset', async (req: Request, res: Response, next: NextFunction) =>
 
 router.post('/wipe-main', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { prisma } = require('../../config/database');
+    const { PrismaClient } = require('@prisma/client');
     const bcrypt = require('bcryptjs');
 
-    await prisma.$executeRawUnsafe(`
+    let dbUrl = process.env.DATABASE_URL || '';
+    if (dbUrl && !dbUrl.includes('schema=')) {
+      dbUrl += (dbUrl.includes('?') ? '&' : '?') + 'schema=public';
+    } else if (dbUrl) {
+      dbUrl = dbUrl.replace(/schema=[^&]+/, 'schema=public');
+    }
+
+    const tempPrisma = new PrismaClient({ datasources: { db: { url: dbUrl } } });
+
+    await tempPrisma.$executeRawUnsafe(`
       TRUNCATE TABLE 
         "audit_logs", 
         "notifications", 
@@ -61,9 +78,9 @@ router.post('/wipe-main', async (req: Request, res: Response, next: NextFunction
 
     // Recreate admin user
     const hashedPassword = await bcrypt.hash('password123', 10);
-    const existingAdmin = await prisma.user.findUnique({ where: { email: 'admin@ledger.test' } });
+    const existingAdmin = await tempPrisma.user.findUnique({ where: { email: 'admin@ledger.test' } });
     if (!existingAdmin) {
-      await prisma.user.create({
+      await tempPrisma.user.create({
         data: {
           name: 'Admin User',
           email: 'admin@ledger.test',
@@ -72,6 +89,8 @@ router.post('/wipe-main', async (req: Request, res: Response, next: NextFunction
         }
       });
     }
+
+    await tempPrisma.$disconnect();
 
     res.json({ success: true, message: 'Main schema wiped completely.' });
   } catch (error) {
