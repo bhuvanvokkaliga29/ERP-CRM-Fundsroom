@@ -1,7 +1,7 @@
 import { ReactNode, useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
-  Bell, ChevronDown, Search, X, Users, Bot, History, UserCog, LogOut, Package, ArrowLeftRight
+  Bell, ChevronDown, Search, X, Users, Bot, History, UserCog, LogOut, Package, ArrowLeftRight, Menu
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -202,6 +202,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   const notifRef = useRef<HTMLDivElement>(null);
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const { data: notifData } = useQuery({
     queryKey: ['notifications'],
@@ -245,7 +246,13 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         <div className="w-full px-4 lg:px-8 xl:px-12">
           <div className="flex h-14 items-center justify-between">
             {/* Left side logo */}
-            <div className="flex-1 flex items-center">
+            <div className="flex-1 flex items-center gap-4">
+              <button 
+                className="lg:hidden text-[#737373] hover:text-[#F5F5F5] transition-colors"
+                onClick={() => setMobileMenuOpen(true)}
+              >
+                <Menu size={20} />
+              </button>
               <Link to="/dashboard" className="text-xl font-normal tracking-tight text-[#F5F5F5]">Ledger.</Link>
             </div>
 
@@ -276,6 +283,13 @@ export default function MainLayout({ children }: { children: ReactNode }) {
             <div className="flex-1 flex items-center justify-end gap-4">
               <button
                 onClick={() => setSearchOpen(true)}
+                className="lg:hidden p-2 text-[#737373] hover:text-[#F5F5F5] transition-colors"
+              >
+                <Search size={18} />
+              </button>
+              
+              <button
+                onClick={() => setSearchOpen(true)}
                 className="hidden lg:flex items-center gap-2 px-3 py-1.5 text-sm text-[#737373] hover:text-[#F5F5F5] transition-colors"
               >
                 <Search size={16} />
@@ -283,7 +297,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
                 <span className="hidden xl:inline-block ml-2 text-[10px] font-mono border border-[#1a1a1a] rounded px-1 text-[#737373]">⌘K</span>
               </button>
 
-              <Link to="/challans/new" className="btn-primary text-[13px] tracking-wide px-4 py-1.5 whitespace-nowrap">
+              <Link to="/challans/new" className="hidden sm:inline-flex btn-primary text-[13px] tracking-wide px-4 py-1.5 whitespace-nowrap">
                 + New Challan
               </Link>
 
@@ -333,6 +347,56 @@ export default function MainLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </header>
+
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-[100] flex flex-col bg-[#050505] lg:hidden">
+          <div className="flex items-center justify-between px-4 h-14 border-b border-[#1a1a1a]">
+            <Link to="/dashboard" className="text-xl font-normal tracking-tight text-[#F5F5F5]" onClick={() => setMobileMenuOpen(false)}>Ledger.</Link>
+            <button onClick={() => setMobileMenuOpen(false)} className="text-[#737373] hover:text-white p-2"><X size={20} /></button>
+          </div>
+          <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
+            <div className="space-y-4">
+              <Link to="/dashboard" className="block text-lg font-medium text-[#F5F5F5]" onClick={() => setMobileMenuOpen(false)}>Overview</Link>
+              
+              <div className="pt-4 border-t border-[#1a1a1a]">
+                <p className="text-[11px] text-[#737373] uppercase tracking-[0.2em] mb-3">Customers</p>
+                <div className="space-y-3 pl-2">
+                  <Link to="/customers" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Directory</Link>
+                  <Link to="/followups" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Follow-ups</Link>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-[#1a1a1a]">
+                <p className="text-[11px] text-[#737373] uppercase tracking-[0.2em] mb-3">Sales</p>
+                <div className="space-y-3 pl-2">
+                  <Link to="/challans" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Challans</Link>
+                  <Link to="/returns" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Returns</Link>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-[#1a1a1a]">
+                <p className="text-[11px] text-[#737373] uppercase tracking-[0.2em] mb-3">Inventory</p>
+                <div className="space-y-3 pl-2">
+                  <Link to="/products" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Products</Link>
+                  <Link to="/inventory" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Stock</Link>
+                  <Link to="/inventory/movements" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Movements</Link>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-[#1a1a1a]">
+                <Link to="/invoices" className="block text-lg font-medium text-[#F5F5F5]" onClick={() => setMobileMenuOpen(false)}>Purchases</Link>
+              </div>
+              <div className="pt-4 border-t border-[#1a1a1a]">
+                <Link to="/analytics" className="block text-lg font-medium text-[#F5F5F5]" onClick={() => setMobileMenuOpen(false)}>Reports</Link>
+              </div>
+              <div className="pt-4 border-t border-[#1a1a1a]">
+                <Link to="/copilot" className="block text-lg font-medium text-[#F5F5F5]" onClick={() => setMobileMenuOpen(false)}>Intelligence</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Content Area */}
       <main className="flex-1 w-full px-4 lg:px-8 xl:px-12 py-4 lg:pt-8">
