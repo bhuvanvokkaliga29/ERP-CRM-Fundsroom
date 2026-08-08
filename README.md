@@ -41,8 +41,7 @@ This environment is pre-filled with hundreds of mock records so you can immediat
 
 ## 🏛️ System Architecture
 
-[![Ledger Architecture Diagram](https://raw.githubusercontent.com/bhuvanvokkaliga29/ERP-CRM-Fundsroom/main/docs/architecture.png)](https://raw.githubusercontent.com/bhuvanvokkaliga29/ERP-CRM-Fundsroom/main/docs/architecture.png)
-*(Click the image to zoom in)*
+<img width="5262" height="2605" alt="architecture-a4-1786189858369" src="https://github.com/user-attachments/assets/e9179ff7-82a7-41d0-b6e5-14a561e56d69" />
 
 ### Architecture Overview
 This platform is structured as a decoupled, full-stack enterprise architecture:
