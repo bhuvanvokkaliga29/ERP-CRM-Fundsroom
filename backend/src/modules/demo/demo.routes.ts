@@ -47,13 +47,8 @@ router.post('/wipe-main', async (req: Request, res: Response, next: NextFunction
     const { PrismaClient } = require('@prisma/client');
     const bcrypt = require('bcryptjs');
 
-    let dbUrl = process.env.DATABASE_URL || '';
-    if (dbUrl && !dbUrl.includes('schema=')) {
-      dbUrl += (dbUrl.includes('?') ? '&' : '?') + 'schema=public';
-    } else if (dbUrl) {
-      dbUrl = dbUrl.replace(/schema=[^&]+/, 'schema=public');
-    }
-
+    // Do not modify the schema! Connect to the EXACT same database the main app uses.
+    const dbUrl = process.env.DATABASE_URL || '';
     const tempPrisma = new PrismaClient({ datasources: { db: { url: dbUrl } } });
 
     await tempPrisma.$executeRawUnsafe(`
