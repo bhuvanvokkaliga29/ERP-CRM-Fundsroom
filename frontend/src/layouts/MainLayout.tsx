@@ -260,22 +260,40 @@ export default function MainLayout({ children }: { children: ReactNode }) {
             <div className="flex-1 flex justify-center pr-12 xl:pr-24">
               <nav className="hidden lg:flex items-center gap-6">
                 <Link to="/dashboard" className={navLinkClass('/dashboard')}>Overview</Link>
-                <DropdownMenu title="Customers" items={[
-                  {name: 'Directory', href: '/customers'},
-                  {name: 'Follow-ups', href: '/followups'}
-                ]} />
-                <DropdownMenu title="Sales" items={[
-                  {name: 'Challans', href: '/challans'},
-                  {name: 'Returns', href: '/returns'}
-                ]} />
-                <DropdownMenu title="Inventory" items={[
-                  {name: 'Products', href: '/products'},
-                  {name: 'Stock', href: '/inventory'},
-                  {name: 'Movements', href: '/inventory/movements'}
-                ]} />
-                <Link to="/invoices" className={navLinkClass('/invoices')}>Purchases</Link>
-                <Link to="/analytics" className={navLinkClass('/analytics')}>Reports</Link>
-                <Link to="/copilot" className={navLinkClass('/copilot')}>Intelligence</Link>
+                
+                {['ADMIN', 'SALES'].includes(user?.role || '') && (
+                  <DropdownMenu title="Customers" items={[
+                    {name: 'Directory', href: '/customers'},
+                    {name: 'Follow-ups', href: '/followups'}
+                  ]} />
+                )}
+                
+                {['ADMIN', 'SALES', 'WAREHOUSE', 'ACCOUNTS'].includes(user?.role || '') && (
+                  <DropdownMenu title="Sales" items={[
+                    {name: 'Challans', href: '/challans'},
+                    {name: 'Returns', href: '/returns'}
+                  ]} />
+                )}
+
+                {['ADMIN', 'WAREHOUSE', 'SALES'].includes(user?.role || '') && (
+                  <DropdownMenu title="Inventory" items={[
+                    {name: 'Products', href: '/products'},
+                    {name: 'Stock', href: '/inventory'},
+                    {name: 'Movements', href: '/inventory/movements'}
+                  ]} />
+                )}
+
+                {['ADMIN', 'ACCOUNTS'].includes(user?.role || '') && (
+                  <Link to="/invoices" className={navLinkClass('/invoices')}>Purchases & Finance</Link>
+                )}
+                
+                {['ADMIN', 'ACCOUNTS', 'SALES'].includes(user?.role || '') && (
+                  <Link to="/analytics" className={navLinkClass('/analytics')}>Reports</Link>
+                )}
+                
+                {['ADMIN'].includes(user?.role || '') && (
+                  <Link to="/copilot" className={navLinkClass('/copilot')}>Intelligence</Link>
+                )}
               </nav>
             </div>
 
@@ -297,9 +315,11 @@ export default function MainLayout({ children }: { children: ReactNode }) {
                 <span className="hidden xl:inline-block ml-2 text-[10px] font-mono border border-[#1a1a1a] rounded px-1 text-[#737373]">⌘K</span>
               </button>
 
-              <Link to="/challans/new" className="hidden sm:inline-flex btn-primary text-[13px] tracking-wide px-4 py-1.5 whitespace-nowrap">
-                + New Challan
-              </Link>
+              {['ADMIN', 'SALES'].includes(user?.role || '') && (
+                <Link to="/challans/new" className="hidden sm:inline-flex btn-primary text-[13px] tracking-wide px-4 py-1.5 whitespace-nowrap">
+                  + New Challan
+                </Link>
+              )}
 
               <div className="relative" ref={notifRef}>
                 <button
@@ -359,40 +379,52 @@ export default function MainLayout({ children }: { children: ReactNode }) {
             <div className="space-y-4">
               <Link to="/dashboard" className="block text-lg font-medium text-[#F5F5F5]" onClick={() => setMobileMenuOpen(false)}>Overview</Link>
               
-              <div className="pt-4 border-t border-[#1a1a1a]">
-                <p className="text-[11px] text-[#737373] uppercase tracking-[0.2em] mb-3">Customers</p>
-                <div className="space-y-3 pl-2">
-                  <Link to="/customers" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Directory</Link>
-                  <Link to="/followups" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Follow-ups</Link>
+              {['ADMIN', 'SALES'].includes(user?.role || '') && (
+                <div className="pt-4 border-t border-[#1a1a1a]">
+                  <p className="text-[11px] text-[#737373] uppercase tracking-[0.2em] mb-3">Customers</p>
+                  <div className="space-y-3 pl-2">
+                    <Link to="/customers" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Directory</Link>
+                    <Link to="/followups" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Follow-ups</Link>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="pt-4 border-t border-[#1a1a1a]">
-                <p className="text-[11px] text-[#737373] uppercase tracking-[0.2em] mb-3">Sales</p>
-                <div className="space-y-3 pl-2">
-                  <Link to="/challans" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Challans</Link>
-                  <Link to="/returns" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Returns</Link>
+              {['ADMIN', 'SALES', 'WAREHOUSE', 'ACCOUNTS'].includes(user?.role || '') && (
+                <div className="pt-4 border-t border-[#1a1a1a]">
+                  <p className="text-[11px] text-[#737373] uppercase tracking-[0.2em] mb-3">Sales</p>
+                  <div className="space-y-3 pl-2">
+                    <Link to="/challans" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Challans</Link>
+                    <Link to="/returns" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Returns</Link>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="pt-4 border-t border-[#1a1a1a]">
-                <p className="text-[11px] text-[#737373] uppercase tracking-[0.2em] mb-3">Inventory</p>
-                <div className="space-y-3 pl-2">
-                  <Link to="/products" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Products</Link>
-                  <Link to="/inventory" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Stock</Link>
-                  <Link to="/inventory/movements" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Movements</Link>
+              {['ADMIN', 'WAREHOUSE', 'SALES'].includes(user?.role || '') && (
+                <div className="pt-4 border-t border-[#1a1a1a]">
+                  <p className="text-[11px] text-[#737373] uppercase tracking-[0.2em] mb-3">Inventory</p>
+                  <div className="space-y-3 pl-2">
+                    <Link to="/products" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Products</Link>
+                    <Link to="/inventory" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Stock</Link>
+                    <Link to="/inventory/movements" className="block text-[#a1a1aa] hover:text-white" onClick={() => setMobileMenuOpen(false)}>Movements</Link>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="pt-4 border-t border-[#1a1a1a]">
-                <Link to="/invoices" className="block text-lg font-medium text-[#F5F5F5]" onClick={() => setMobileMenuOpen(false)}>Purchases</Link>
-              </div>
-              <div className="pt-4 border-t border-[#1a1a1a]">
-                <Link to="/analytics" className="block text-lg font-medium text-[#F5F5F5]" onClick={() => setMobileMenuOpen(false)}>Reports</Link>
-              </div>
-              <div className="pt-4 border-t border-[#1a1a1a]">
-                <Link to="/copilot" className="block text-lg font-medium text-[#F5F5F5]" onClick={() => setMobileMenuOpen(false)}>Intelligence</Link>
-              </div>
+              {['ADMIN', 'ACCOUNTS'].includes(user?.role || '') && (
+                <div className="pt-4 border-t border-[#1a1a1a]">
+                  <Link to="/invoices" className="block text-lg font-medium text-[#F5F5F5]" onClick={() => setMobileMenuOpen(false)}>Purchases & Finance</Link>
+                </div>
+              )}
+              {['ADMIN', 'ACCOUNTS', 'SALES'].includes(user?.role || '') && (
+                <div className="pt-4 border-t border-[#1a1a1a]">
+                  <Link to="/analytics" className="block text-lg font-medium text-[#F5F5F5]" onClick={() => setMobileMenuOpen(false)}>Reports</Link>
+                </div>
+              )}
+              {['ADMIN'].includes(user?.role || '') && (
+                <div className="pt-4 border-t border-[#1a1a1a]">
+                  <Link to="/copilot" className="block text-lg font-medium text-[#F5F5F5]" onClick={() => setMobileMenuOpen(false)}>Intelligence</Link>
+                </div>
+              )}
             </div>
           </div>
         </div>
