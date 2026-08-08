@@ -16,9 +16,8 @@
 ## 🚀 Live Demo & Links
 
 - **GitHub Repository:** [bhuvanvokkaliga29/ERP-CRM-Fundsroom](https://github.com/bhuvanvokkaliga29/ERP-CRM-Fundsroom)
-- **Live Frontend (Vercel):** [https://erp-crm-fundsroom-three.vercel.app](https://erp-crm-fundsroom-three.vercel.app)
-- **Live Backend API (Render):** [https://erp-crm-fundsroom-6lbo.onrender.com](https://erp-crm-fundsroom-6lbo.onrender.com)
-- **API Documentation (Swagger UI):** [https://erp-crm-fundsroom-6lbo.onrender.com/api/docs](https://erp-crm-fundsroom-6lbo.onrender.com/api/docs)
+- **Live :** [https://erp-crm-fundsroom-three.vercel.app](https://erp-crm-fundsroom-three.vercel.app)
+
 
 ## 🔐 Test Login Credentials
 
