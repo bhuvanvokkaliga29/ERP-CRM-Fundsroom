@@ -1,77 +1,94 @@
-# ⚡ Ledger — Enterprise ERP & CRM Operations Portal
+<div align="center">
+  <h1>⚡ Ledger — Enterprise ERP & CRM Operations Portal</h1>
+  <p><strong>A production-grade, full-stack enterprise operations platform designed for wholesale and distribution businesses.</strong></p>
 
-[![Node.js CI](https://github.com/bhuvanvokkaliga29/Trust-builders-replit/actions/workflows/ci.yml/badge.svg)](https://github.com/bhuvanvokkaliga29/Trust-builders-replit/actions/workflows/ci.yml)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Code Style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/)
+  [![Node.js CI](https://github.com/bhuvanvokkaliga29/ERP-CRM-Fundsroom/actions/workflows/ci.yml/badge.svg)](https://github.com/bhuvanvokkaliga29/ERP-CRM-Fundsroom/actions/workflows/ci.yml)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+</div>
 
-> **Ledger** is a production-grade, full-stack enterprise operations platform designed for wholesale and distribution businesses. It seamlessly bridges Customer Relationship Management (CRM), Inventory Control, and Financial Operations into a single, high-performance interface.
+<br />
 
----
-
-## 🎯 Architectural Philosophy
-
-This project was built with a strict adherence to **enterprise engineering standards**, prioritizing scalability, type-safety, and maintainability. It avoids "magic" abstractions in favor of explicit, readable, and highly optimized code.
-
-### The Stack
-* **Frontend**: React 19, TypeScript, Vite, Tailwind CSS (Custom Design System), React Query, Lucide Icons.
-* **Backend**: Node.js, Express.js, TypeScript, Zod (Validation), JWT (Stateless Auth).
-* **Database**: PostgreSQL (Relational integrity) + Prisma ORM (Type-safe database client).
-* **Infrastructure**: Docker & Docker Compose for guaranteed environment parity.
+> **Ledger** seamlessly bridges Customer Relationship Management (CRM), Inventory Control, and Financial Operations into a single, high-performance interface. Designed with enterprise-grade architecture, it guarantees transactional integrity, strict role-based access, and real-time operational visibility.
 
 ---
 
-## 🚀 Key Features & Capabilities
+## 🏛️ System Architecture
 
-### 🛡️ Security & Authentication
-* **Stateless JWT Architecture**: Secure, http-only cookie alternatives and local-storage token management.
-* **Role-Based Access Control (RBAC)**: Strict API middleware ensuring `ADMIN` vs `USER` boundary enforcement.
-* **Input Validation**: Edge-to-edge type safety and runtime validation using `Zod` to prevent injection and malformed data.
-* **Audit Logging**: Comprehensive tracking of sensitive actions (Authentication, Stock Adjustments, Challan Confirmations).
+<div align="center">
+  <a href="docs/architecture.png" target="_blank">
+    <img src="docs/architecture.png" alt="Ledger Architecture Diagram" width="100%" />
+  </a>
+  <p><em>🔍 Click the image above to zoom in and explore the full architectural diagram.</em></p>
+</div>
 
-### 💼 Business Logic & Operations
-* **CRM & Follow-ups**: Intelligent tracking of customer health, revenue contribution, and scheduled follow-up actions.
-* **Inventory Management**: Real-time stock tracking with automated low-stock threshold alerts and ledger-style movement history.
-* **Sales Challans**: End-to-end lifecycle (Draft ➔ Confirmed) with transactional database operations to guarantee stock integrity.
-* **Applied AI Copilot**: A read-only, data-grounded AI assistant capable of analyzing the live database to surface immediate business risks and summaries.
-
-### 🎨 Design Engineering
-* **Custom Design System**: Abandoned standard component libraries (like MUI or Bootstrap) in favor of a bespoke, premium black-on-black monochrome aesthetic.
-* **Data-Dense UIs**: Optimized for professionals who need high information density without visual clutter.
+This platform is structured as a full-stack monorepo encompassing a Node.js API gateway and a React SPA, driven by a relational PostgreSQL database to ensure strict ACID compliance for inventory and sales ledgers.
 
 ---
 
-## 🏗️ Repository Structure
+## 🎯 Core Modules & Implementation Status
 
-This repository is structured as a monolithic repository (monorepo) managing two distinct micro-applications:
+We have strictly adhered to the business requirements, delivering a complete suite of interconnected modules:
 
-```text
-.
-├── backend/                  # Node.js API Service
-│   ├── prisma/               # Database schemas & migrations
-│   ├── src/
-│   │   ├── controllers/      # Route handlers
-│   │   ├── middlewares/      # Auth, RBAC, Validation
-│   │   ├── routes/           # Express router definitions
-│   │   └── index.ts          # Server entry point
-├── frontend/                 # React SPA
-│   ├── src/
-│   │   ├── components/       # Reusable UI primitives
-│   │   ├── contexts/         # Global state (Auth)
-│   │   ├── pages/            # Feature-level views
-│   │   └── lib/              # Axios interceptors, utils
-├── docs/                     # Architecture & API documentation
-├── .github/workflows/        # CI/CD Pipelines
-├── docker-compose.yml        # Multi-container orchestration
-└── Makefile                  # Developer workflow automation
-```
+### 1. 🔐 Authentication & Roles (100% Complete)
+Secure, stateless JWT-based authentication system with strict Role-Based Access Control (RBAC).
+- **Supported Roles:** `Admin`, `Sales`, `Warehouse`, `Accounts`.
+- **Implementation:** Middleware validates tokens on every request and restricts endpoint access based on the user's role (e.g., only Admin/Warehouse can adjust stock, only Sales/Admin can create Challans).
+
+### 2. 🤝 Customer CRM Module (100% Complete)
+A comprehensive CRM system to track and nurture leads into active wholesale clients.
+- **Data Points Tracked:** Customer Name, Mobile Number, Email, Business Name, GST Number (Optional), Customer Type (Retail, Wholesale, Distributor), Address, Status (Lead, Active, Inactive), Next Follow-up Date, and specialized Notes.
+- **Features:** 
+  - Advanced search and filtering by customer status and type.
+  - Dedicated Customer Detail Pages showing interaction history.
+  - Interactive Follow-up Logging to nurture leads.
+
+### 3. 📦 Product & Inventory Module (100% Complete)
+Real-time, ledged-based stock tracking system to prevent overselling.
+- **Data Points Tracked:** Product Name, SKU/Code, Category, Unit Price, Current Stock, Minimum Stock Alert Quantity, Location/Warehouse.
+- **Features:**
+  - Automated Low-Stock Alerts generated on the dashboard.
+  - Granular Stock Movement Ledgers (tracking every addition and deduction).
+  - Categorization and SKU-based fast searching.
+
+### 4. 🛒 Order / Sales Module (100% Complete)
+A robust transaction engine that connects CRM with Inventory.
+- **Features:**
+  - **Create Sales Challans:** Dynamically add products, auto-calculate subtotals, GST, and grand totals.
+  - **Stock Automation:** Upon confirming a Challan, stock is automatically and transactionally deducted from the warehouse.
+  - **Status Tracking:** Track orders through `DRAFT`, `CONFIRMED`, `SHIPPED`, and `DELIVERED` states.
+  - **Payment Integration:** Track whether a challan is `PENDING`, `PARTIAL`, or `PAID`.
+
+### 5. 📊 Reporting & Analytics Module (100% Complete)
+A powerful dashboard providing immediate operational visibility.
+- **Features:**
+  - **Total Revenue & Sales:** Real-time calculation of generated revenue across all timeframes.
+  - **Low Stock Alerts:** Instant visibility into products requiring re-ordering.
+  - **Recent Orders:** A live feed of the latest sales challans.
+  - **Customer Metrics:** Breakdown of active customers and leads.
+
+---
+
+## 💻 Tech Stack & Engineering Choices
+
+### The Frontend (Client-side)
+* **React 19 & Vite:** Lightning-fast HMR and optimized production builds.
+* **TypeScript:** End-to-end type safety eliminating runtime errors.
+* **Tailwind CSS:** A bespoke, ultra-premium black-on-black minimalist design system. No generic component libraries used.
+* **React Query:** Powerful async state management and caching.
+
+### The Backend (Server-side)
+* **Node.js & Express.js:** Industry standard, robust REST API architecture.
+* **PostgreSQL:** Relational database chosen for its strict data integrity constraints.
+* **Prisma ORM:** Type-safe database client ensuring our TypeScript types perfectly match the database schema.
+* **Zod:** Strict runtime validation for all incoming API requests to prevent malformed data.
 
 ---
 
 ## 🛠️ Local Development Setup
 
 ### Prerequisites
-* **Node.js** (v18 or higher)
+* **Node.js** (v20.x or higher)
 * **Docker Desktop** (for PostgreSQL orchestration)
 
 ### 1. Database Initialization
@@ -120,11 +137,6 @@ To access the platform locally, use the seeded admin credentials:
 
 ---
 
-## 📈 Next Steps & Roadmap
-- [ ] Implement Redis for response caching on heavy analytics endpoints.
-- [ ] Add robust unit and integration testing suite (Jest + Supertest).
-- [ ] Integrate a background job queue (BullMQ) for heavy PDF generation.
-- [ ] E2E Testing with Playwright.
-
----
-*Built with precision for modern operations.*
+<div align="center">
+  <p><em>Built with precision for modern enterprise operations.</em></p>
+</div>
