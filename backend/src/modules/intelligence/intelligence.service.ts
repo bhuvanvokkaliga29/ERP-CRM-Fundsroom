@@ -133,7 +133,7 @@ export class IntelligenceService {
         churnRisk = 'HIGH';
         churnReasons.push(`No purchase for ${daysSinceLastPurchase} days (typical interval: ${Math.round(avgPurchaseInterval)} days)`);
       } else if (avgPurchaseInterval > 0 && daysSinceLastPurchase > avgPurchaseInterval * 1.5) {
-        churnRisk = churnRisk === 'HIGH' ? 'HIGH' : 'MEDIUM';
+        churnRisk = 'MEDIUM';
         churnReasons.push(`Purchase frequency declining`);
       }
     }

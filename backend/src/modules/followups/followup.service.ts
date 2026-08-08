@@ -135,7 +135,7 @@ export class FollowUpService {
     const followUp = await prisma.customerFollowUp.create({
       data: {
         customerId: data.customerId,
-        assignedToId: data.assignedToId,
+        assignedToId: data.assignedToId || createdById,
         scheduledAt: new Date(data.scheduledAt),
         type: data.type,
         note: data.note,

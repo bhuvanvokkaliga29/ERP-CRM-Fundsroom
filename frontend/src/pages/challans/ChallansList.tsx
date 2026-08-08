@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import { Plus, Search, Eye } from 'lucide-react';
+import { Plus, Search, Eye, Clipboard } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import clsx from 'clsx';
@@ -67,7 +67,7 @@ export default function ChallansList() {
           <div className="p-8 text-center text-[#a1a1aa] text-sm">Loading challans...</div>
         ) : challans.length === 0 ? (
           <div className="p-12 text-center">
-            <ClipboardList size={32} className="text-[#a1a1aa] mx-auto mb-3" />
+            <Clipboard size={32} className="text-[#a1a1aa] mx-auto mb-3" />
             <p className="text-white font-medium">No challans found</p>
             <p className="text-[#a1a1aa] text-sm mt-1">Create your first sales challan to get started.</p>
             <button className="btn-primary mt-4" onClick={() => navigate('/challans/new')}>New Challan</button>
