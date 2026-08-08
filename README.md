@@ -15,12 +15,8 @@
 
 ## 🏛️ System Architecture
 
-<div align="center">
-  <a href="docs/architecture.png" target="_blank">
-    <img src="docs/architecture.png" alt="Ledger Architecture Diagram" width="100%" />
-  </a>
-  <p><em>🔍 Click the image above to zoom in and explore the full architectural diagram.</em></p>
-</div>
+[![Ledger Architecture Diagram](docs/architecture.png)](docs/architecture.png)
+*🔍 Click the image above to zoom in and explore the full architectural diagram.*
 
 This platform is structured as a full-stack monorepo encompassing a Node.js API gateway and a React SPA, driven by a relational PostgreSQL database to ensure strict ACID compliance for inventory and sales ledgers.
 
