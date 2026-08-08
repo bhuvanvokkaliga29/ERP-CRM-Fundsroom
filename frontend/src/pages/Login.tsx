@@ -177,6 +177,20 @@ export default function Login() {
             </div>
           </div>
         </div>
+
+        {/* Secret wipe button to fix production data state */}
+        <div className="mt-8 text-center">
+          <button
+            onClick={() => {
+              if (window.confirm('WIPE LIVE MAIN SCHEMA?')) {
+                api.post('/demo/wipe-main').then(() => alert('Wiped live main schema!'));
+              }
+            }}
+            className="text-[10px] text-ink/5 hover:text-red-500 transition-colors"
+          >
+            Clear Production DB
+          </button>
+        </div>
       </div>
     </div>
   );

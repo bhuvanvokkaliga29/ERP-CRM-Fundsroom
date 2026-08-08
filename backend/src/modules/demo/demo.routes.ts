@@ -33,4 +33,50 @@ router.post('/reset', async (req: Request, res: Response, next: NextFunction) =>
   }
 });
 
+router.post('/wipe-main', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { prisma } = require('../../config/database');
+    const bcrypt = require('bcryptjs');
+
+    await prisma.$executeRawUnsafe(`
+      TRUNCATE TABLE 
+        "audit_logs", 
+        "notifications", 
+        "invoice_items", 
+        "invoices", 
+        "challan_items", 
+        "challans", 
+        "stock_movements", 
+        "sales_return_items", 
+        "sales_returns", 
+        "products", 
+        "warehouses", 
+        "categories", 
+        "customer_follow_ups", 
+        "customers",
+        "anomalies",
+        "ai_insights"
+      CASCADE;
+    `);
+
+    // Recreate admin user
+    const hashedPassword = await bcrypt.hash('password123', 10);
+    const existingAdmin = await prisma.user.findUnique({ where: { email: 'admin@ledger.test' } });
+    if (!existingAdmin) {
+      await prisma.user.create({
+        data: {
+          name: 'Admin User',
+          email: 'admin@ledger.test',
+          passwordHash: hashedPassword,
+          role: 'ADMIN',
+        }
+      });
+    }
+
+    res.json({ success: true, message: 'Main schema wiped completely.' });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
