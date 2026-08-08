@@ -127,6 +127,30 @@ export class DashboardService {
       },
     });
 
+    // Recent challans
+    const recentChallans = await prisma.challan.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 5,
+      include: { customer: { select: { customerName: true } } }
+    });
+
+    // Overdue follow-ups (specifically overdue)
+    const overdueFollowUpsList = await prisma.customerFollowUp.findMany({
+      where: { status: 'OVERDUE' },
+      orderBy: { scheduledAt: 'asc' },
+      take: 5,
+      include: { customer: { select: { customerName: true } } }
+    });
+
+    // Low stock alerts
+    const lowStockAlerts = await prisma.$queryRaw<Array<{ id: string; productName: string; currentStock: number; minimumStockAlertQuantity: number }>>`
+      SELECT id, "productName", "currentStock", "minimumStockAlertQuantity"
+      FROM products
+      WHERE "currentStock" <= "minimumStockAlertQuantity" AND status = 'ACTIVE'
+      ORDER BY "currentStock" ASC
+      LIMIT 5
+    `;
+
     return {
       kpis: {
         revenue: { value: currentRev, change: Math.round(revenueChange * 10) / 10, period: '30d' },
@@ -159,6 +183,12 @@ export class DashboardService {
         metadata: a.metadata,
       })),
       upcomingFollowUps,
+      revenueTrend,
+      topProducts,
+      topCustomers,
+      recentChallans,
+      overdueFollowUps: overdueFollowUpsList,
+      lowStockAlerts,
     };
   }
 }
