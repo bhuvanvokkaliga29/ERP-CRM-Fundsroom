@@ -108,6 +108,15 @@ app.use('/api/v1/audit', auditRoutes);
 app.use('/api/v1/intelligence', intelligenceRoutes);
 app.use('/api/v1/ai', aiRoutes);
 
+// Root route
+app.get('/', (_req, res) => {
+  res.json({
+    status: 'online',
+    message: '⚡ Ledger ERP API is running. Visit /api/docs for Swagger documentation.',
+    version: '1.0.0'
+  });
+});
+
 // 404 handler
 app.use((_req, res) => {
   res.status(404).json({
