@@ -17,6 +17,7 @@
 
 - **GitHub Repository:** [bhuvanvokkaliga29/ERP-CRM-Fundsroom](https://github.com/bhuvanvokkaliga29/ERP-CRM-Fundsroom)
 - **Live :** [https://erp-crm-fundsroom-three.vercel.app](https://erp-crm-fundsroom-three.vercel.app)
+- video : https://drive.google.com/drive/folders/1kvbesg9nHaYZEvliLXhk24q4X3NT5Ysv?usp=drive_link
 
 
 ## 🔐 Test Login Credentials
