@@ -1,0 +1,4 @@
+# Force GitHub Linguist to detect these as primary languages
+marketing/index.html linguist-language=HTML
+marketing/style.css linguist-language=CSS
+marketing/script.js linguist-language=JavaScript
