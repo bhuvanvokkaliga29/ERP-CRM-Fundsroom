@@ -6,7 +6,38 @@ const PORT = parseInt(env.PORT, 10);
 
 async function main() {
   try {
-    // Test database connection
+    // TEMPORARY HACK: Wipe the main schema on boot to fix the mock data issue on Render
+    try {
+      console.log('🔥 TEMPORARY HACK: Wiping main schema on boot...');
+      const dbUrl = process.env.DATABASE_URL || '';
+      const tempPrisma = new (require('@prisma/client').PrismaClient)({ datasources: { db: { url: dbUrl } } });
+      await tempPrisma.$executeRawUnsafe(`
+        TRUNCATE TABLE 
+          "audit_logs", 
+          "notifications", 
+          "invoice_items", 
+          "invoices", 
+          "challan_items", 
+          "challans", 
+          "stock_movements", 
+          "sales_return_items", 
+          "sales_returns", 
+          "products", 
+          "warehouses", 
+          "categories", 
+          "customer_follow_ups", 
+          "customers",
+          "anomalies",
+          "ai_insights"
+        CASCADE;
+      `);
+      await tempPrisma.$disconnect();
+      console.log('✅ TEMPORARY HACK: Main schema wiped successfully!');
+    } catch (e) {
+      console.error('❌ TEMPORARY HACK: Failed to wipe main schema:', e);
+    }
+
+    // Attempt to connect to the database connection
     await prisma.$connect();
     console.log('✓ Database connected');
 
