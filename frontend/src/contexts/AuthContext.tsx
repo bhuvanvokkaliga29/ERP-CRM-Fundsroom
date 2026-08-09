@@ -27,7 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (token) {
         try {
           const response = await api.get('/auth/me');
-          setUser(response.data.data.user);
+          setUser(response.data.data);
         } catch (error) {
           console.error('Auth initialization failed', error);
           localStorage.removeItem('token');
