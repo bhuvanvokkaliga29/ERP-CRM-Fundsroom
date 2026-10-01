@@ -20,7 +20,7 @@
 - video : https://drive.google.com/drive/folders/1kvbesg9nHaYZEvliLXhk24q4X3NT5Ysv?usp=drive_link
 
 
-## 🔐 Test Login Credentials
+## 🔐Login Credentials
 
 This application features a dual-environment architecture using PostgreSQL schema-based isolation.
 
