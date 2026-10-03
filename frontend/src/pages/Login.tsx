@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { api } from '../lib/api';
 import { useAuth } from '../contexts/AuthContext';
-import { Lock, Mail, Copy, Check } from 'lucide-react';
+import { Lock, Mail, Copy, Check, Play, Shield, Truck, Calculator, TrendingUp } from 'lucide-react';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -18,7 +18,7 @@ type LoginForm = z.infer<typeof loginSchema>;
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, demoLogin } = useAuth();
   
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedPassword, setCopiedPassword] = useState(false);
@@ -38,10 +38,8 @@ export default function Login() {
     resolver: zodResolver(loginSchema)
   });
 
-  const onSubmit = async (data: LoginForm, isDemo: boolean = false) => {
-    // Determine tenant based on how the form was submitted
-    const tenant = isDemo ? 'demo' : 'main';
-    localStorage.setItem('tenantId', tenant);
+  const onSubmit = async (data: LoginForm) => {
+    localStorage.setItem('tenantId', 'main');
     
     setIsLoading(true);
     try {
@@ -49,13 +47,21 @@ export default function Login() {
       const { accessToken: token, user } = response.data.data;
       
       login(token, user);
-      toast.success(isDemo ? 'Entering Demo Environment' : 'Welcome back!');
+      toast.success('Welcome back!');
       navigate('/dashboard');
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Login failed');
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleDemoLogin = (role: 'ADMIN' | 'SALES' | 'WAREHOUSE' | 'ACCOUNTS' = 'ADMIN') => {
+    demoLogin(role);
+    toast.success(`Entering demo as ${role.charAt(0) + role.slice(1).toLowerCase()}`, {
+      icon: '🚀',
+    });
+    navigate('/dashboard');
   };
 
   return (
@@ -67,7 +73,60 @@ export default function Login() {
         </div>
         
         <div className="card">
-          <form onSubmit={handleSubmit((data) => onSubmit(data, false))} className="space-y-6">
+          {/* Demo Login Section — prominent at the top */}
+          <div className="mb-6 pb-6 border-b border-ink/10">
+            <p className="text-xs text-graphite mb-4 uppercase tracking-wider font-semibold">Quick Demo Access</p>
+            
+            <button
+              type="button"
+              onClick={() => handleDemoLogin('ADMIN')}
+              className="btn-primary w-full flex items-center justify-center gap-2 mb-4 py-3 text-sm"
+              id="demo-login-btn"
+            >
+              <Play size={16} />
+              Enter Demo — No Sign-up Required
+            </button>
+
+            <p className="text-[11px] text-graphite mb-2">Or pick a specific role:</p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => handleDemoLogin('ADMIN')}
+                className="px-3 py-2 text-xs font-medium border border-ink/10 rounded hover:bg-ink/5 transition-colors text-ink text-left flex items-center gap-2"
+              >
+                <Shield size={12} className="text-graphite" />
+                Admin (Full)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDemoLogin('SALES')}
+                className="px-3 py-2 text-xs font-medium border border-ink/10 rounded hover:bg-ink/5 transition-colors text-ink text-left flex items-center gap-2"
+              >
+                <TrendingUp size={12} className="text-graphite" />
+                Sales
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDemoLogin('WAREHOUSE')}
+                className="px-3 py-2 text-xs font-medium border border-ink/10 rounded hover:bg-ink/5 transition-colors text-ink text-left flex items-center gap-2"
+              >
+                <Truck size={12} className="text-graphite" />
+                Warehouse
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDemoLogin('ACCOUNTS')}
+                className="px-3 py-2 text-xs font-medium border border-ink/10 rounded hover:bg-ink/5 transition-colors text-ink text-left flex items-center gap-2"
+              >
+                <Calculator size={12} className="text-graphite" />
+                Accounts
+              </button>
+            </div>
+          </div>
+
+          {/* Real Login Form */}
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <p className="text-xs text-graphite uppercase tracking-wider font-semibold">Or sign in with credentials</p>
             <div>
               <label className="label" htmlFor="email">Email Address</label>
               <div className="relative">
@@ -111,9 +170,9 @@ export default function Login() {
             </button>
           </form>
 
-          <div className="mt-8 border-t border-ink/10 pt-6">
-            <p className="text-xs text-graphite mb-3 uppercase tracking-wider font-semibold">Judge Access</p>
-            <div className="bg-[#0a0a0a] border border-ink/10 rounded-md p-3 space-y-2 mb-6">
+          <div className="mt-6 border-t border-ink/10 pt-4">
+            <p className="text-xs text-graphite mb-3 uppercase tracking-wider font-semibold">Credentials</p>
+            <div className="bg-[#0a0a0a] border border-ink/10 rounded-md p-3 space-y-2">
               <div className="flex items-center justify-between">
                 <div className="text-sm">
                   <span className="text-graphite mr-2">Email:</span>
@@ -143,55 +202,10 @@ export default function Login() {
                 </button>
               </div>
             </div>
-
-            <p className="text-xs text-graphite mb-3 uppercase tracking-wider font-semibold">One-Click Demo Login</p>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => onSubmit({ email: 'admin@ledger.test', password: 'password123' }, true)}
-                className="px-3 py-2 text-xs font-medium border border-ink/10 rounded hover:bg-ink/5 transition-colors text-ink text-left"
-              >
-                1. Admin (Full)
-              </button>
-              <button
-                type="button"
-                onClick={() => onSubmit({ email: 'sales@ledger.test', password: 'password123' }, true)}
-                className="px-3 py-2 text-xs font-medium border border-ink/10 rounded hover:bg-ink/5 transition-colors text-ink text-left"
-              >
-                2. Sales 
-              </button>
-              <button
-                type="button"
-                onClick={() => onSubmit({ email: 'warehouse@ledger.test', password: 'password123' }, true)}
-                className="px-3 py-2 text-xs font-medium border border-ink/10 rounded hover:bg-ink/5 transition-colors text-ink text-left"
-              >
-                3. Warehouse
-              </button>
-              <button
-                type="button"
-                onClick={() => onSubmit({ email: 'accounts@ledger.test', password: 'password123' }, true)}
-                className="px-3 py-2 text-xs font-medium border border-ink/10 rounded hover:bg-ink/5 transition-colors text-ink text-left"
-              >
-                4. Accounts
-              </button>
-            </div>
           </div>
-        </div>
-
-        {/* Secret wipe button to fix production data state */}
-        <div className="mt-8 text-center">
-          <button
-            onClick={() => {
-              if (window.confirm('WIPE LIVE MAIN SCHEMA?')) {
-                api.post('/demo/wipe-main').then(() => alert('Wiped live main schema!'));
-              }
-            }}
-            className="text-[10px] text-ink/5 hover:text-red-500 transition-colors"
-          >
-            Clear Production DB
-          </button>
         </div>
       </div>
     </div>
   );
 }
+

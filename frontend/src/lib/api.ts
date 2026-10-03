@@ -23,10 +23,14 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      // Use window location to redirect to login if not already there
-      if (window.location.pathname !== '/login') {
-        window.location.href = '/login';
+      // In demo mode, don't redirect to login — the user is using a fake token
+      const isDemoMode = localStorage.getItem('demoMode') === 'true';
+      if (!isDemoMode) {
+        localStorage.removeItem('token');
+        // Use window location to redirect to login if not already there
+        if (window.location.pathname !== '/login') {
+          window.location.href = '/login';
+        }
       }
     }
     return Promise.reject(error);
